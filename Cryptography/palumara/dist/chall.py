@@ -39,7 +39,7 @@ def menu():
 def challenge():
     x, y = keygen()
     
-    for _ in range(292):
+    for _ in range(260):
         menu()
         choice = int(input(">> "))
         
