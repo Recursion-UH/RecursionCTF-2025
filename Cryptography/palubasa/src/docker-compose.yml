@@ -1,0 +1,10 @@
+version: '1'
+name: 'crypto-v1'
+services:
+  read-around:
+    build: .
+    restart: on-failure
+    container_name: v1
+    read_only: true
+    ports:
+      - 8045:8010

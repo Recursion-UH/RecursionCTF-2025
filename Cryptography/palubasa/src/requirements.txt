@@ -1,0 +1,3 @@
+libnum
+pycryptodome
+ecdsa
