@@ -1,0 +1,9 @@
+name: pwn.3.pacarankokvirtual
+services:
+  pacaran-kok-virtual:
+    container_name: pwn.3.pacarankokvirtual
+    build: .
+    privileged: true
+    ports:
+      - "61007:1337"
+    restart: unless-stopped
