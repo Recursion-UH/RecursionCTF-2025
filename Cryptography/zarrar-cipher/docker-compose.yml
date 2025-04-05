@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  zarrarcipher:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: zarrarcipher
+    ports:
+      - "13339:13339"
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tty: true
