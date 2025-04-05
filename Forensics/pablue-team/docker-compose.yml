@@ -1,0 +1,6 @@
+services:
+  pablue-team:
+    build: .
+    restart: always
+    ports:
+      - "32128:1337"
