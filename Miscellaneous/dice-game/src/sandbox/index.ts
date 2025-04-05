@@ -78,7 +78,7 @@ const newSandboxLimiter = rateLimit({
 
 app.post("/new", newSandboxLimiter, async (req: Request, res: Response) => {
   const { uid, nonce, challenge } = req.body;
-  if (uid && sandboxes[uid].running) {
+  if (uid && sandboxes[uid] && sandboxes[uid].running) {
     newSandboxLimiter.resetKey(req.ip!);
     res.status(400).send({
       "message": "You already have a instance, kill it to create a new one."
@@ -128,11 +128,12 @@ app.post("/new", newSandboxLimiter, async (req: Request, res: Response) => {
 
     const anvil = spawn("anvil", [
       "--accounts", "1",
-      "--balance", "16",
+      "--balance", "200000",
       // "--host", "0.0.0.0",
       "--port", `${port}`,
       "--mnemonic", mnemonic,
       // "--mnemonic-random", "12",
+      "--gas-limit", "1000000000",
       "--block-base-fee-per-gas", "0",
       "--chain-id", "61006",
       // "--hardfork", "cancun"
@@ -175,14 +176,14 @@ app.post("/new", newSandboxLimiter, async (req: Request, res: Response) => {
     const wallet = new ethers.Wallet(deployerAccount.privateKey, web3);
     const tx = await wallet.sendTransaction({
       to: playerAccount.address,
-      value: ethers.parseEther("4")
+      value: ethers.parseEther("64")
     });
     await tx.wait();
 
     const contractData = fs.readFileSync("../blockchain/out/Setup.sol/Setup.json", "utf8");
     const contract = JSON.parse(contractData);
     const factory = new ethers.ContractFactory(contract.abi, contract.bytecode, wallet);
-    const setupContract = await factory.deploy();
+    const setupContract = await factory.deploy(playerAccount.address);
     await setupContract.waitForDeployment();
 
     const setupContractAddress = await setupContract.getAddress();
@@ -191,6 +192,12 @@ app.post("/new", newSandboxLimiter, async (req: Request, res: Response) => {
     const setupContract2 = new ethers.Contract(setupContractAddress, contract.abi, wallet);
     const challengeContractAddress = await setupContract2.getChallengeAddress();
     console.log(`Challenge contract deployed at ${challengeContractAddress}`);
+
+    const tx2 = await wallet.sendTransaction({
+      to: challengeContractAddress,
+      value: ethers.parseEther("2500")
+    });
+    await tx2.wait();
 
     const nodeAccounts = [
       {
@@ -216,6 +223,11 @@ app.post("/new", newSandboxLimiter, async (req: Request, res: Response) => {
     sandboxes[uniqueString] = nodeInfo;
 
     setTimeout(() => {
+      if (!sandboxes[uniqueString].running) {
+        console.log(`Instance ${uniqueString} already killed`);
+        return;
+      }
+
       anvil.kill();
       sandboxes[uniqueString].running = false;
       console.log(`Instance ${uniqueString} killed after 15 minutes`);
@@ -388,7 +400,7 @@ app.get("/:uid/kill", killSandboxLimiter, (req: Request, res: Response) => {
 
   try {
     sandbox.anvil.kill();
-    delete sandboxes[uid];
+    sandbox.running = false;
 
     console.log(`Instance ${uid} killed`);
 

@@ -8,5 +8,6 @@ services:
       - "8545:8545"
     restart: unless-stopped
     environment:
-      - PUBLIC_IP=103.87.66.171
-      - NODE_ENV=production
+      # - PUBLIC_IP=103.87.66.171
+      - PUBLIC_IP=localhost
+      # - NODE_ENV=production
