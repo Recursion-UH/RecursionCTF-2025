@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+  </head>
+  <body class="bg-stone-900 min-h-screen">
+    <header class="bg-stone-700 text-stone-50 text-white top-0 sticky z-10">
+      <div class="max-w-screen-xl mx-auto p-2">
+        <div class="flex flex-row justify-between items-center">
+          <h1>Leme Game</h1>
+          <nav class="flex flex-row gap-x-4 items-center">
+            <span>Balance: <span id="balance">0</span></span>
+            <button class="bg-teal-700 text-stone-50 rounded p-2 hover:cursor-pointer" id="connect-wallet">Connect Wallet</button>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-screen-lg mx-auto p-4">
+      <div class="flex flex-col gap-y-4">
+        <div class="flex flex-col bg-stone-800 text-stone-50 rounded">
+          <div class="flex flex-row">
+            <div class="flex flex-col gap-y-2 p-4">
+              <label for="bet-amount">Bet Amount</label>
+              <input
+                type="number"
+                class="bg-stone-700 text-stone-50 rounded p-2"
+                placeholder="Bet Amount"
+                id="bet-amount"
+              />
+              <button class="bg-teal-700 text-stone-50 rounded p-2 hover:cursor-pointer" id="place-bet">
+                Place Bet
+              </button>
+            </div>
+            <div class="flex-grow bg-stone-700 p-4 rounded-tr">
+              <div class="flex flex-row max-w-160 mx-auto justify-between">
+                <div class="flex flex-col gap-y-2 items-center">
+                  <span class="uppercase">You</span>
+                  <div class="flex text-xl w-16 h-16 bg-stone-800 text-stone-50 rounded items-center justify-center">
+                    <span class="text-green-500">0</span>
+                  </div>
+                </div>
+                <div class="flex flex-col gap-y-2 items-center">
+                  <span class="uppercase">House</span>
+                  <div class="flex text-xl w-16 h-16 bg-stone-800 text-stone-50 rounded items-center justify-center">
+                    <span class="text-green-500">0</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-row border-t border-stone-600 p-4 hover:cursor-pointer">
+            Provably Fair
+          </div>
+        </div>
+        <div class="flex flex-col gap-x-4 gap-y-2 bg-stone-800 text-stone-50 rounded p-4">
+          <h2>Leme</h2>
+          <div class="flex flex-row gap-x-2">
+            <div class="flex flex-col gap-y-2">
+              <div class="flex flex-row w-64 p-2 bg-stone-700 text-stone-50 rounded justify-between">
+                <span>House Edge</span>
+                <span>3.03%</span>
+              </div>
+              <div class="flex flex-row w-64 p-2 bg-stone-700 text-stone-50 rounded justify-between">
+                <span>Min Bet</span>
+                <span>10</span>
+              </div>
+            </div>
+            <div class="flex-grow bg-stone-700 text-stone-50 p-2 rounded">
+              <span>
+                In this game, both you and the house spin a roulette wheel.
+                <br>
+                <ul class="list-disc list-inside">
+                  <li>If the number spun is two digits, sum the digits (e.g., 23 → 2 + 3 = 5).</li>
+                  <li>If the sum is still a two-digit number (e.g., 29 → 2 + 9 = 11), use only the last digit (in this case, 1).</li>
+                </ul>
+                <br>
+                Winning conditions:
+                <ul class="list-disc list-inside">
+                  <li>If your final result is higher than the house's, you win double your bet.</li>
+                  <li>If your result is 0 (and it's not a tie), you win quadruple times your bet.</li>
+                  <li>If your result is 1 (and it's not a tie), you win triple your bet.</li>
+                  <li>If your result is 9, you lose.</li>
+                  <li>If the result is a tie or your number is lower than the house's, you also lose.</li>
+                </ul>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="app"></div>
+    <script type="module" src="/src/game.ts"></script>
+  </body>
+</html>

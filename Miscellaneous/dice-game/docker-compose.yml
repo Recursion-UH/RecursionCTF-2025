@@ -1,0 +1,12 @@
+name: misc.1.dicegame
+services:
+  dice-game:
+    container_name: misc.1.dicegame
+    build: .
+    privileged: true
+    ports:
+      - "8545:8545"
+    restart: unless-stopped
+    environment:
+      - PUBLIC_IP=103.87.66.171
+      - NODE_ENV=production

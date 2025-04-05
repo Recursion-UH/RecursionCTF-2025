@@ -1,0 +1,30 @@
+import './style.css';
+
+function connectWallet(element: HTMLButtonElement) {
+  element.addEventListener('click', async () => {
+    if (window.ethereum) {
+      if (window.signer) {
+        return alert("Already connected!");
+      }
+
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      window.provider = new ethers.BrowserProvider(window.ethereum);
+      window.signer = await provider.getSigner();
+      console.log("Connected:", await signer.getAddress());
+
+      if (!window.signer) {
+        return alert("Connect wallet first!");
+      }
+      
+      const balance = await provider.getBalance(await signer.getAddress());
+      console.log("Balance:", ethers.formatEther(balance), "ETH");
+
+      // document.querySelector<HTMLDivElement>('#wallet')!.textContent = await signer.getAddress();
+      document.querySelector<HTMLDivElement>('#balance')!.textContent = ethers.formatEther(balance) + " ETH";
+    } else {
+      alert("Please install MetaMask.");
+    }
+  });
+}
+
+connectWallet(document.querySelector<HTMLButtonElement>('#connect-wallet')!);

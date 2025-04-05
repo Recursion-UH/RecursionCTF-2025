@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + TS</title>
+</head>
+
+<body class="bg-teal-950 text-white min-h-screen">
+  <main class="flex flex-col gap-4 max-w-screen-xl mx-auto break-all p-4">
+    <div class="flex flex-col gap-4 bg-teal-900 p-4 rounded">
+      <h1 class="text-xl">Blockchain Launcher</h1>
+      <div class="p-4 rounded hidden" id="alert"></div>
+      <div class="flex flex-col gap-2">
+        <label for="pow">Proof of Work</label>
+        <input type="text" id="pow" name="pow" placeholder="Input nonce here" class="bg-teal-800 rounded h-8 px-2" />
+        <input type="hidden" id="challenge" name="challenge" value="{{CHALLENGE}}" />
+      </div>
+      <div class="flex flex-row gap-2">
+        <button class="flex-grow bg-teal-800 text-white rounded p-2 hover:cursor-pointer" id="launch">Launch</button>
+        <button class="flex-grow bg-red-800 text-white rounded p-2 hover:cursor-pointer" id="stop">Stop</button>
+        <button class="flex-grow bg-green-800 text-white rounded p-2 hover:cursor-pointer" id="flag">Get Flag</button>
+      </div>
+      <span id="solve-pow">python3 &lt;(curl -sSL {{SOLVE_POW_PY_URL}}) {{CHALLENGE}} {{DIFFICULTY}}</span>
+    </div>
+    <div class="flex flex-col gap-4 bg-teal-900 p-4 rounded">
+      <div class="flex flex-row gap-4">
+        <span class="flex-1">RPC URL</span>
+        <span class="flex-1" id="rpc-url">PLACEHOLDER</span>
+      </div>
+      <div class="flex flex-row gap-4">
+        <span class="flex-1">Private Key</span>
+        <span class="flex-1" id="private-key">PLACEHOLDER</span>
+      </div>
+      <div class="flex flex-row gap-4">
+        <span class="flex-1">Wallet Address</span>
+        <span class="flex-1" id="wallet-address">PLACEHOLDER</span>
+      </div>
+      <div class="flex flex-row gap-4">
+        <span class="flex-1">Setup Address</span>
+        <span class="flex-1" id="setup-address">PLACEHOLDER</span>
+      </div>
+      <div class="flex flex-row gap-4">
+        <span class="flex-1">Challenge Address</span>
+        <span class="flex-1" id="challenge-address">PLACEHOLDER</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- <div id="app"></div> -->
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
