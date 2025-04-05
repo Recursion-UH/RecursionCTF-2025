@@ -2,7 +2,7 @@
 
 ## Description
 
-Wow chat is this real??? I've intercepted traffic from a chat application and captured. One of the packets in the capture seems corrupted. Can you figure out what the chat talked about?
+Wow chat is this real??? I've intercepted traffic from a chat application and captured it. One of the packets in the capture seems corrupted. Can you figure out what the chat talked about?
 
 by `ztz`
 
