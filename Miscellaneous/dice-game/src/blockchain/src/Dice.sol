@@ -9,7 +9,6 @@ contract Dice {
     }
 
     mapping(address => Game) public games;
-    mapping(address => uint256) public balances;
 
     function getGameHash(bytes32 serverSeed, bytes32 clientSeed) public pure returns (bytes32) {
         return keccak256(abi.encodePacked(serverSeed, clientSeed));
@@ -28,43 +27,44 @@ contract Dice {
         return keccak256(abi.encodePacked(block.timestamp + offset, msg.sender));
     }
 
-    constructor() {
-        balances[msg.sender] = 1337;
-    }
-
     function startGame() public {
-        require(games[msg.sender].remainingRolls == 0, "Game already in progress");
+        require(games[msg.sender].remainingRolls <= 1, "Game already in progress");
 
         bytes32 clientSeed = initialSeed(block.number);
-        bytes32[] memory serverSeedChain = new bytes32[](32767);
+        bytes32[] memory serverSeedChain = new bytes32[](128);
         serverSeedChain[0] =
             keccak256(abi.encodePacked(initialSeed(block.number + 1)));
 
-        for (uint32 i = 1; i < 32767; i++) {
+        for (uint32 i = 1; i < 128; i++) {
             serverSeedChain[i] = keccak256(abi.encodePacked(serverSeedChain[i - 1]));
         }
 
-        games[msg.sender] = Game(clientSeed, serverSeedChain, 32767);
+        games[msg.sender] = Game(clientSeed, serverSeedChain, 127);
     }
 
-    function rollDice(uint256 wager, uint16 rollOver) public {
-        require(wager > 0 && wager <= 100, "Wager must be between 1 and 100");
+    function stopGame() public {
+        require(games[msg.sender].remainingRolls > 0, "No game in progress");
+        delete games[msg.sender];
+    }
+
+    function rollDice(uint16 rollOver) public payable {
+        require(msg.value > 0 && msg.value <= 100 ether, "Wager must be between 0 and 100 ETH");
         require(rollOver > 0 && rollOver <= 1000, "Roll over must be between 1 and 1000");
-        require(wager <= balances[msg.sender], "Insufficient balance");
 
         Game storage game = games[msg.sender];
         require(game.remainingRolls > 0, "No rolls remaining");
 
-        balances[msg.sender] -= wager;
-
-        uint32 index = game.remainingRolls - 1;
+        uint32 index = game.remainingRolls;
         bytes32 gameHash = getGameHash(game.serverSeedChain[index], game.clientSeed);
         uint256 roll = getRoll(gameHash);
 
-        uint256 payout = 0;
         if (roll >= rollOver) {
-            payout = wager * (102 / (101 - wager));
-            balances[msg.sender] += payout;
+            uint256 scale = 1e6;
+            uint256 numerator = 102 * scale;
+            uint256 denominator = 101 * scale - (rollOver * scale / 10);
+            uint256 payout = msg.value * numerator / denominator;
+            require(address(this).balance >= payout, "Contract has insufficient funds");
+            payable(msg.sender).transfer(payout);
         }
 
         game.remainingRolls--;
@@ -74,15 +74,6 @@ contract Dice {
         return games[msg.sender].remainingRolls;
     }
 
-    function getBalance() public view returns (uint256) {
-        return balances[msg.sender];
-    }
-
-    function amIMillionerNow() public view returns (bool) {
-        if (balances[msg.sender] > 1337006) {
-            return true;
-        }
-        
-        return false;
-    }
+    function deposit() external payable {}
+    receive() external payable {}
 }

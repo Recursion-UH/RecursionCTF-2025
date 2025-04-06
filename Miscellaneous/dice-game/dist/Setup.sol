@@ -5,13 +5,15 @@ import { Dice } from "./Dice.sol";
 
 contract Setup {
     Dice public dice;
+    address public player;
 
-    constructor() {
+    constructor(address _player) {
         dice = new Dice();
+        player = _player;
     }
 
     function isSolved() public view returns (bool) {
-        return dice.amIMillionerNow();
+        return player.balance > 1_337 ether;
     }
 
     function getChallengeAddress() public view returns (address) {
