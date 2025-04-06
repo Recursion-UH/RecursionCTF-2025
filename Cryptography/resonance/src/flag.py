@@ -1,0 +1,1 @@
+FLAG = b'RECURSION{res0nant_r3dact10n_09}'
