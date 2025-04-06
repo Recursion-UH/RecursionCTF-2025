@@ -6,11 +6,7 @@ First, navigate to the directory path `\.rsrc\0\RCDATA\` inside the given file. 
 
 ## Use the `CETRAINER` to Extract the `.CT` File
 
-Once you've located the .CETRAINER file, you need to extract the .CT file from it. To do this, you will need to use a CETRAINER extractor or decryptor. These tools are available online, and you can easily find one with a quick search.
-
-## Decode the Encoded Lua Code
-
-Inside the `.CT` file, you will likely find Lua code that has been encoded using a function called `encodeFunction`. This is done to obfuscate the actual content, including the flag. Search online for a decoder for the `encodeFunction` encoding. There are many decoders available that will help reverse the encoding.
+Once you've located the `.CETRAINER` file, you need to extract the `.CT` file from it. To do this, you will need to use a `CETRAINER` extractor or decryptor. These tools are available online, and you can easily find one with a quick search.
 
 ## Find the Flag in the Decoded Lua Code
 
