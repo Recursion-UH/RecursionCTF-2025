@@ -2,7 +2,13 @@
 
 ## Description
 
-I came across this photo in my gallery from a visit on February 1, 2025, but I can't recall where I took it. Can you help me figure it out?
+I came across this photo in my gallery from a visit on February 2, 2025, but I can't recall where I took it. Can you help me figure it out?
+
+what3words: https://what3words.com/
+
+Note: 
+- Change what3words language to **English** in what3words settings.
+- The what3words landmark is exact position of the photo.
 
 Flag Format: `RECURSION{word1.word2.word3}`
 

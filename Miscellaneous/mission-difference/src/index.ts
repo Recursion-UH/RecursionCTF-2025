@@ -7,8 +7,8 @@ const input = { language: "Solidity", sources: { "./SimpleContract.sol": { conte
 const output = JSON.parse(solc.compile(JSON.stringify(input)));
 const contract = output.contracts["./SimpleContract.sol"]["SimpleContract"];
 
-const provider = new ethers.EtherscanProvider("sepolia", "eitsngapain");
-const wallet = new ethers.Wallet("eitsngapain", provider);
+const provider = new ethers.EtherscanProvider("sepolia", "EEUW6ZPEEJUTE1NTIYAV4HR6NDWMRFCPCT");
+const wallet = new ethers.Wallet("4a3e2c0c38d69dbd5f41bce608371092c5aebd967b3b833746d56b163fc78d9c", provider);
 const walletAddress = wallet.address;
 
 console.log("Wallet Address:", walletAddress);

@@ -47,6 +47,11 @@ contract Dice {
         delete games[msg.sender];
     }
 
+    function setClientSeed(bytes32 newClientSeed) public {
+        require(games[msg.sender].remainingRolls > 0, "No game in progress");
+        games[msg.sender].clientSeed = newClientSeed;
+    }
+
     function rollDice(uint16 rollOver) public payable {
         require(msg.value > 0 && msg.value <= 100 ether, "Wager must be between 0 and 100 ETH");
         require(rollOver > 0 && rollOver <= 1000, "Roll over must be between 1 and 1000");

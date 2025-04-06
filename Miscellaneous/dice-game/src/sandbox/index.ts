@@ -443,7 +443,7 @@ app.get("/:uid/flag", async (req: Request, res: Response) => {
   }
 
   try {
-    const contractData = fs.readFileSync("../blockchain/out/Challenge.sol/Challenge.json", "utf8");
+    const contractData = fs.readFileSync("../blockchain/out/Setup.sol/Setup.json", "utf8");
     const contract = JSON.parse(contractData);
 
     const web3 = new ethers.JsonRpcProvider(`http://localhost:${sandbox.port}`);

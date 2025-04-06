@@ -47,7 +47,12 @@ contract Dice {
         delete games[msg.sender];
     }
 
-    function rollDice(uint16 rollOver) public payable {
+    function setClientSeed(bytes32 newClientSeed) public {
+        require(games[msg.sender].remainingRolls > 0, "No game in progress");
+        games[msg.sender].clientSeed = newClientSeed;
+    }
+
+    function rollDice(uint16 rollOver) public payable returns (bytes32 gameHash, uint256 roll) {
         require(msg.value > 0 && msg.value <= 100 ether, "Wager must be between 0 and 100 ETH");
         require(rollOver > 0 && rollOver <= 1000, "Roll over must be between 1 and 1000");
 
@@ -55,8 +60,8 @@ contract Dice {
         require(game.remainingRolls > 0, "No rolls remaining");
 
         uint32 index = game.remainingRolls;
-        bytes32 gameHash = getGameHash(game.serverSeedChain[index], game.clientSeed);
-        uint256 roll = getRoll(gameHash);
+        gameHash = getGameHash(game.serverSeedChain[index], game.clientSeed);
+        roll = getRoll(gameHash);
 
         if (roll >= rollOver) {
             uint256 scale = 1e6;
